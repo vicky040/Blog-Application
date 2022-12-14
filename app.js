@@ -12,12 +12,21 @@ app.use("/api/blog" , blogRouter)
 
 
 
-app.use(express.static(path.resolve("../frontend/build"))); 
-app.get("*" , (req,res)=> {
-  res.sendFile(path.resolve("../frontend/build/index.html"))
-})
+// app.use(express.static(path.resolve("./frontend/build"))); 
+// app.get("*" , (req,res)=> {
+//   res.sendFile(path.resolve("./frontend/build/index.html"))
+// })
 
 
+app.use(express.static(path.join(__dirname , "./frontend/build"))); 
+app.get("*", function (_, res) {
+  res.sendFile(
+    path.join(__dirname, "./frontend/build/index.html"),
+    function (err) {
+      res.status(500).send(err);
+    }
+  );
+});
 
 mongoose.connect(
     "mongodb+srv://vicky:vic@cluster0.3ifpvrn.mongodb.net/BlogAppretryWrites=true&w=majority"
